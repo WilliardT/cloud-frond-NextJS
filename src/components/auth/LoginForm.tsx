@@ -19,8 +19,17 @@ const LoginForm: React.FC = () => {
       setCookie(null, "_token", token, {
         path: "/",
       });
+
+      location.href = "/dashboard";
+
     } catch (error) {
       console.warn("LoginForm.tsx", error);
+
+      notification.error({
+        message: "Ошибка",
+        description: "Неверный логин или пароль",
+        duration: 2,
+      })
     }
   };
 
