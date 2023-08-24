@@ -6,6 +6,7 @@ import {
   RegisterResponceDTO,
   User,
 } from "./dto/auth.dto";
+import { destroyCookie } from "nookies";
 
 export const login = async (
   values: LoginFormDTO
@@ -21,4 +22,10 @@ export const register = async (
 
 export const getMe = async(): Promise<User> => {
   return (await axios.get("/auth/me")).data;
+}
+
+export const logout = () => {
+  destroyCookie(null, "_token", {
+    path: "/",
+  });
 }
