@@ -1,32 +1,27 @@
 import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
-import nookies from "nookies";
-import axios from "@/core/axios";
-import * as Api from "@/api";
+import { checkAuth } from "@/utils/checkAuth";
+import Header from "@/components/header";
 
 const DashboardPage: NextPage = () => {
-  return <div>DashboardPage</div>;
+  return (
+    <main>
+      <Header />
+      <h1>Dashboard</h1>
+    </main>
+  );
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const { _token } = nookies.get(ctx);
+  const authProps = await checkAuth(ctx);
 
-  axios.defaults.headers.Authorization = `Bearer ${_token}`;
-
-  try {
-    await Api.auth.getMe();
-
-    return {
-      props: {},
-    };
-  } catch (error) {
-    return {
-      redirect: {
-        destination: "/dashboard/auth",
-        permanent: false,
-      },
-    };
+  if ("redirect" in authProps) {
+    return authProps;
   }
+
+  return {
+    props: {},
+  };
 };
 
 export default DashboardPage;
