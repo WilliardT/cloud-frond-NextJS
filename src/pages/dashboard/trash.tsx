@@ -19,7 +19,7 @@ interface Props {
     items: FileItem[]
 }
 
-const DashboardPage: NextPage<Props> & {
+const DashboardTrash: NextPage<Props> & {
   getLayout?: (page: React.ReactNode) => React.ReactNode;
 } = ({items}) => {
   const router = useRouter();
@@ -69,8 +69,8 @@ const DashboardPage: NextPage<Props> & {
   );
 };
 
-DashboardPage.getLayout = (page: React.ReactNode) => {
-  return <RootLayout title="Dashboard / Главная">{page}</RootLayout>;
+DashboardTrash.getLayout = (page: React.ReactNode) => {
+  return <RootLayout title="Dashboard / Корзина">{page}</RootLayout>;
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -81,7 +81,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
 
   try {
-    const items = await Api.files.getAll();
+    const items = await Api.files.getAll('trash');
     return {
       props: {
         items,
@@ -97,4 +97,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 };
 
-export default DashboardPage;
+export default DashboardTrash;
