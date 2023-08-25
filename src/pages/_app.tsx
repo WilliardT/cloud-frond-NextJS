@@ -1,22 +1,15 @@
-import React from 'react';
+import React from "react";
+import "@/styles/globals.scss";
+import type { AppProps } from "next/app";
 
-
-interface AppProps {
-    Component: any;
-    pageProps: any;
+interface Props extends AppProps {
+  Component: AppProps["Component"] & {
+    getLayout: (page: React.ReactElement) => React.ReactNode;
+  };
 }
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => {
-    return (
-        <>
+export default function App({ Component, pageProps }: Props) {
+  const getLayout = Component.getLayout || ((page): React.ReactNode => page);
 
-
-                    <Component {...pageProps}/>
- 
-
-        </>
-
-    );
-};
-
-export default App;
+  return getLayout(<Component {...pageProps} />);
+}

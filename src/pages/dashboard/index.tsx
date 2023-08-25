@@ -1,27 +1,43 @@
-import { GetServerSidePropsContext, NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { checkAuth } from "@/utils/checkAuth";
-import Header from "@/components/header";
+import RootLayout from "@/layouts/layout";
 
-const DashboardPage: NextPage = () => {
+interface DashboardPageProps {}
+
+const DashboardPage: NextPage<DashboardPageProps> & {
+  getLayout?: (page: React.ReactNode) => React.ReactNode;
+} = () => {
   return (
     <main>
-      <Header />
       <h1>Dashboard</h1>
     </main>
   );
 };
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const authProps = await checkAuth(ctx);
+DashboardPage.getLayout = (page: React.ReactNode) => {
+  return <RootLayout title="Dashboard / Главная">{page}</RootLayout>;
+};
 
-  if ("redirect" in authProps) {
-    return authProps;
+export const getServerSideProps = async (
+  ctx: GetServerSidePropsContext
+) => {
+  try {
+    const authProps = await checkAuth(ctx);
+
+    if ("redirect" in authProps) {
+      return authProps;
+    }
+
+    return {
+      props: {},
+    };
+  } catch (error) {
+    console.log("error DashboardPage | getServerSideProps", error);
+    // return {
+    //   props: {},
+    // };
   }
-
-  return {
-    props: {},
-  };
 };
 
 export default DashboardPage;
