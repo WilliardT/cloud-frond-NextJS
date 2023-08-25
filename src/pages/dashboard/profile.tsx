@@ -4,12 +4,15 @@ import styles from "../../styles/Profile.module.scss";
 import { Button } from "antd";
 import { checkAuth } from "@/utils/checkAuth";
 import * as Api from "@/api";
+import RootLayout from "@/layouts/layout";
 
 interface Props {
   userData: User;
 }
 
-const DashboardProfilePage: NextPage<Props> = ({ userData }) => {
+const DashboardProfilePage: NextPage<Props> & {
+  getLayout?: (page: React.ReactNode) => React.ReactNode;
+} = ({ userData }) => {
   const onClickLogout = () => {
     if (window.confirm("Вы действительно хотите выйти?")) {
       Api.auth.logout();
@@ -40,6 +43,10 @@ const DashboardProfilePage: NextPage<Props> = ({ userData }) => {
   );
 };
 
+DashboardProfilePage.getLayout = (page: React.ReactNode) => {
+  return <RootLayout title="Dashboard / Профиль">{page}</RootLayout>;
+};
+
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   try {
     const authProps = await checkAuth(ctx);
@@ -55,7 +62,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
         userData,
       },
     };
-    
   } catch (error) {
     console.log("error DashboardProfilePage | getServerSideProps", error);
     // return {

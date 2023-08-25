@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { checkAuth } from "@/utils/checkAuth";
 import RootLayout from "@/layouts/layout";

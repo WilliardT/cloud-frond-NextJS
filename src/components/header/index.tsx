@@ -18,7 +18,7 @@ const Header: React.FC = () => {
 
   return (
     <Layout.Header className={styles.root}>
-      <div className={styles.headerinner}>
+      <div className={styles.headerInner}>
         <div className={styles.headerLeft}>
           <h2>
             <CloudOutlined />
